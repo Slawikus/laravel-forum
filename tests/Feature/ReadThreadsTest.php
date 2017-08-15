@@ -10,6 +10,12 @@ class ReadThreadsTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->thread = factory('App\Thread')->create();
+    }
+
     /** @test */
     public function threads_are_accessible()
     {
@@ -19,21 +25,29 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_browse_threads()
+    public function a_user_can_browse_all_threads()
     {
-        $thread = factory('App\Thread')->create();
         $response = $this->get('/threads');
 
-        $response->assertSee($thread->title);
+        $response->assertSee($this->thread->title);
     }
 
     /** @test */
     public function a_user_can_browse_particular_thread()
     {
-        $thread = factory('App\Thread')->create();
-        $response = $this->get('/threads/'.$thread->id);
+        $response = $this->get('/threads/'.$this->thread->id);
 
-        $response->assertSee($thread->title);
-        $response->assertSee($thread->body);
+        $response->assertSee($this->thread->title);
+        $response->assertSee($this->thread->body);
+    }
+
+    /** @test */
+    public function a_user_can_read_replies_associated_with_thread()
+    {
+        $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
+
+        $response = $this->get('/threads/'.$this->thread->id);
+
+        $response->assertSee($reply->body);
     }
 }
