@@ -8,24 +8,38 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ThreadTest extends TestCase
 {
+    protected $thread;
+
     use DatabaseMigrations;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->thread = factory(\App\Thread::class)->create();
+    }
 
     /** @test */
     public function a_thread_has_replies()
     {
-        $thread = factory(\App\Thread::class)->create();
-
         $this->assertInstanceOf(
             \Illuminate\Database\Eloquent\Collection::class,
-            $thread->replies
+            $this->thread->replies
         );
     }
 
-        /** @test */
+    /** @test */
     public function a_thread_has_creator()
     {
-        $thread = factory(\App\Thread::class)->create();
+        $this->assertInstanceOf(\App\User::class, $this->thread->creator);
+    }
 
-        $this->assertInstanceOf(\App\User::class, $thread->creator);
+    /** @test */
+    public function a_thread_can_add_reply()
+    {
+        $this->thread->addReply([
+            'body' => 'reply_body',
+            'user_id' => 1
+        ]);
+        $this->assertCount(1, $this->thread->replies);
     }
 }
