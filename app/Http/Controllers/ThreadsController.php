@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadsController extends Controller
 {
@@ -36,7 +37,15 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $thread = new Thread;
+
+        $thread->title = $request->title;
+        $thread->body = $request->body;
+        $thread->user_id = Auth::id();
+
+        $thread->save();
+
+        return back();
     }
 
     /**
