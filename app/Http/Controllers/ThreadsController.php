@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ThreadsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only('store');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +49,7 @@ class ThreadsController extends Controller
 
         $thread->save();
 
-        return back();
+        return redirect($thread->path());
     }
 
     /**

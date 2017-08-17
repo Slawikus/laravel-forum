@@ -14,12 +14,13 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_create_threads()
     {
-        $user = factory(\App\User::class)->create();
-        $this->be($user);
+        $this->actingAs(factory(\App\User::class)->create());
         $thread = factory(\App\Thread::class)->make();
         $this->post('/threads', $thread->toArray());
 
-        $this->get('/threads')->assertSee($thread->title);
+        $this->get($thread->path())
+            ->assertSee($thread->title)
+            ->assertSee($thread->body);
     }
 
     /** @test */
