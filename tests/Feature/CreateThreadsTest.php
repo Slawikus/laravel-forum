@@ -24,7 +24,7 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_user_can_not_create_threads()
+    public function guest_can_not_create_threads()
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
