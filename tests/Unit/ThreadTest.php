@@ -19,6 +19,15 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
+    public function it_can_create_string_path()
+    {
+        $this->assertEquals(
+            '/threads/'.$this->thread->channel->slug.'/'.$this->thread->id,
+            $this->thread->path()
+        );
+    }
+
+    /** @test */
     public function a_thread_has_replies()
     {
         $this->assertInstanceOf(
@@ -40,5 +49,11 @@ class ThreadTest extends TestCase
 
         $this->thread->addReply($reply);
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test */
+    public function it_belongs_to_channel()
+    {
+        $this->assertInstanceOf('App\Channel', $this->thread->channel);
     }
 }

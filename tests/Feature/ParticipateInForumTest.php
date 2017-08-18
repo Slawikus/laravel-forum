@@ -16,7 +16,7 @@ class ParticipateInForumTest extends TestCase
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $this->post('/threads/1/replies', []);
+        $this->post('/threads/some-channel/1/replies', []);
     }
 
     /** @test */
@@ -26,7 +26,7 @@ class ParticipateInForumTest extends TestCase
         $thread = create(\App\Thread::class);
         $reply = make(\App\Reply::class);
 
-        $this->post('/threads/'.$thread->id.'/replies', $reply->toArray());
+        $this->post($thread->path().'/replies', $reply->toArray());
         $this->get($thread->path())->assertSee($reply->body);
     }
 }

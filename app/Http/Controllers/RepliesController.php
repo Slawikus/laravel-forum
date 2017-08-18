@@ -14,7 +14,7 @@ class RepliesController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(Request $request, Thread $thread)
+    public function store(Request $request, $channelId, Thread $thread)
     {
         $reply = Reply::make(['body' => $request->body, 'user_id' => Auth::id()]);
         $thread->addReply($reply);

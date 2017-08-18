@@ -35,7 +35,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_browse_particular_thread()
     {
-        $response = $this->get('/threads/'.$this->thread->id);
+        $response = $this->get($this->thread->path());
 
         $response->assertSee($this->thread->title);
         $response->assertSee($this->thread->body);
@@ -46,7 +46,7 @@ class ReadThreadsTest extends TestCase
     {
         $reply = create('App\Reply', ['thread_id' => $this->thread->id]);
 
-        $response = $this->get('/threads/'.$this->thread->id);
+        $response = $this->get($this->thread->path());
 
         $response->assertSee($reply->body);
     }
