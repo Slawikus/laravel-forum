@@ -30,4 +30,9 @@ class Thread extends Model
     {
         $this->replies()->save($reply);
     }
+
+    public function getRepliesCountAttribute()
+    {
+        return $this->replies()->count();
+    }
 }

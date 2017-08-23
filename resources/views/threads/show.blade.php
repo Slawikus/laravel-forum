@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>
@@ -15,20 +15,14 @@
                     <div class="body">{{ $thread->body }}</div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            @foreach( $thread->replies as $reply)
+            @foreach( $replies as $reply)
                 @include('threads.reply')
             @endforeach
-        </div>
-    </div>
 
-    @if ( Auth::check() )
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            {{ $replies->links() }}
+
+            @if ( Auth::check() )
                 <form method="POST" action="{{ $thread->path().'/replies' }}">
                     {{ csrf_field() }}
                     <div class="form-group">
@@ -38,8 +32,17 @@
                     </div>
                     <button type="submit" class="btn btn-default">Post</button>
                 </form>
+            @endif
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p>This thread was created {{ $thread->created_at->diffForHumans() }}
+                    by <a href="#">{{ $thread->creator->name }}</a> and currently
+                    has {{ $thread->repliesCount }} {{ str_plural('reply', $thread->repliesCount) }}.</p>
+                </div>
             </div>
         </div>
-    @endif
+    </div>
 </div>
 @endsection
