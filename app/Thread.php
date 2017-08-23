@@ -31,6 +31,11 @@ class Thread extends Model
         $this->replies()->save($reply);
     }
 
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
     public function getRepliesCountAttribute()
     {
         return $this->replies()->count();
