@@ -45,16 +45,16 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href="/threads">All Threads</a></li>
-                        @if (auth()->check())
                             <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Threads <span class="caret"></span></a>
                               <ul class="dropdown-menu">
-                                    <li><a href="/threads/create">Create thread</a></li>
-                                    <li><a href="/threads?by={{ auth()->user()->name }}">My threads</a></li>
+                                    @if (auth()->check())
+                                        <li><a href="/threads/create">Create thread</a></li>
+                                        <li><a href="/threads?by={{ auth()->user()->name }}">My threads</a></li>
+                                    @endif
                                     <li><a href="/threads?popular=1">Popular threads</a></li>
                               </ul>
                             </li>
-                        @endif
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Channels <span class="caret"></span></a>
                           <ul class="dropdown-menu">
