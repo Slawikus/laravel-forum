@@ -29,6 +29,6 @@ class Reply extends Model
 
     public function isFavourited()
     {
-        return $this->favourites()->where(['user_id' => auth()->id() ])->exists();
+        return $this->favourites_count == 0 ? false : true;
     }
 }
