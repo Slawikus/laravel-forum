@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CreateThreadsTest extends TestCase
+class ManageThreadsTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -58,6 +58,19 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
         $this->publishThread(['channel_id' => 9999])
             ->assertSessionHasErrors('channel_id');
+    }
+
+    /** @test */
+    public function thread_can_be_deleted_along_with_associated_replies()
+    {
+        $this->signIn();
+        $thread = create(\App\Thread::class);
+        $reply = create(\App\Reply::class, ['thread_id' => $thread->id]);
+        $response = $this->json('DELETE', $thread->path());
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
     public function publishThread($overrides = [])
