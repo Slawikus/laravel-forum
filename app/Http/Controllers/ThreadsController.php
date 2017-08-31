@@ -12,7 +12,7 @@ class ThreadsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only(['create', 'store']);
+        $this->middleware('auth')->only(['create', 'store', 'destroy']);
     }
     /**
      * Display a listing of the resource.
@@ -113,7 +113,11 @@ class ThreadsController extends Controller
     {
         $thread->delete();
 
-        return response([], 204);
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/threads');
     }
 
     protected function getThreads($channel, $filters)

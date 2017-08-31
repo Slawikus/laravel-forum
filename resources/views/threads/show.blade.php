@@ -6,9 +6,20 @@
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>
-                    <a href="{{ route('profile', $thread->creator->name) }}">{{ $thread->creator->name}}</a> posted about {{ $thread->title }}
-                    </strong>
+                    <div class="level">
+                        <div class="flex">
+                            <strong>
+                            <a href="{{ route('profile', $thread->creator->name) }}">{{ $thread->creator->name}}</a> posted about {{ $thread->title }}
+                            </strong>
+                        </div>
+                         <div>
+                            <form method="POST" action="{{ $thread->path() }}">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn btn-link">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="panel-body">
@@ -39,7 +50,7 @@
                 <div class="panel-body">
                     <p>This thread was created {{ $thread->created_at->diffForHumans() }}
                     by <a href="#">{{ $thread->creator->name }}</a> and currently
-                    has {{ $thread->repliesCount }} {{ str_plural('reply', $thread->repliesCount) }}.</p>
+                    has {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}.</p>
                 </div>
             </div>
         </div>

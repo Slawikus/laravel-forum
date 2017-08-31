@@ -61,6 +61,15 @@ class ManageThreadsTest extends TestCase
     }
 
     /** @test */
+    public function guests_cannot_delete_threads()
+    {
+        $this->expectException('Illuminate\Auth\AuthenticationException');
+
+        $thread = create(\App\Thread::class);
+        $response = $this->delete($thread->path());
+    }
+
+    /** @test */
     public function thread_can_be_deleted_along_with_associated_replies()
     {
         $this->signIn();
