@@ -72,14 +72,27 @@ class ManageThreadsTest extends TestCase
     /** @test */
     public function thread_can_be_deleted_along_with_associated_replies()
     {
-        $this->signIn();
-        $thread = create(\App\Thread::class);
+        $user = create(\App\User::class);
+        $this->signIn($user);
+        $thread = create(\App\Thread::class, ['user_id' => $user->id]);
         $reply = create(\App\Reply::class, ['thread_id' => $thread->id]);
         $response = $this->json('DELETE', $thread->path());
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+    /** @test */
+    public function thread_can_be_deleted_only_by_creator()
+    {
+        $user = create(\App\User::class);
+        $this->signIn($user);
+        $threadNotByUser = create(\App\Thread::class);
+
+        $response = $this->json('DELETE', $threadNotByUser->path());
+
+        $this->assertDatabaseHas('threads', ['id' => $threadNotByUser->id]);
     }
 
     public function publishThread($overrides = [])
