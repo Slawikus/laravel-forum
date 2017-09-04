@@ -86,6 +86,8 @@ class ManageThreadsTest extends TestCase
     /** @test */
     public function thread_can_be_deleted_only_by_creator()
     {
+        $this->expectException('Illuminate\Auth\Access\AuthorizationException');
+
         $user = create(\App\User::class);
         $this->signIn($user);
         $threadNotByUser = create(\App\Thread::class);
