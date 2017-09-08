@@ -65,4 +65,41 @@ class ParticipateInForumTest extends TestCase
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
+
+    /** @test */
+    public function authorized_users_can_update_replies()
+    {
+        $user = create(\App\User::class);
+        $reply = create(\App\Reply::class, ['user_id' => $user->id]);
+
+        $this->signIn($user)
+            ->patch("/replies/{$reply->id}", ['body' => 'You have been changed']);
+
+        $this->assertDatabaseHas(
+            'replies',
+            ['id' => $reply->id, 'body' => 'You have been changed']
+        );
+    }
+
+    /** @test */
+    public function guests_cannot_update_replies()
+    {
+        $this->expectException('Illuminate\Auth\AuthenticationException');
+
+        $reply = create(\App\Reply::class);
+
+        $this->patch("/replies/{$reply->id}", ['body' => 'something']);
+    }
+
+    /** @test */
+    public function unauthorized_users_cannot_update_replies()
+    {
+        $this->expectException('Illuminate\Auth\Access\AuthorizationException');
+
+        $reply = create(\App\Reply::class);
+
+        $this->signIn()
+            ->patch("/replies/{$reply->id}", ['body' => 'something'])
+            ->assertStatus(403);
+    }
 }
