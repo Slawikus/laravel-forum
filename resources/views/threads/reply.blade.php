@@ -17,4 +17,13 @@
     <div class="panel-body">
         <div class="body">{{ $reply->body }}</div>
     </div>
+    @can('delete', $reply)
+        <div class="panel-footer">
+            <form action="/replies/{{ $reply->id }}" method="POST">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <button class="btn btn-danger btn-xs" type="submit">Delete reply</button>
+            </form>
+        </div>
+    @endcan
 </div>
