@@ -42531,7 +42531,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         toggle: function toggle() {
-            return this.isFavourited ? this.destroy() : this.create();
+            this.isFavourited ? this.destroy() : this.create();
         },
         create: function create() {
             axios.post(this.endpoint);

@@ -24,7 +24,7 @@
         },
         methods: {
             toggle() {
-                return this.isFavourited ? this.destroy() : this.create();
+                this.isFavourited ? this.destroy() : this.create();
             },
             create() {
                 axios.post(this.endpoint);
