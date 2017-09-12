@@ -25,9 +25,10 @@ Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
 
 Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
-
-Route::post('/replies/{reply}/favourites', 'FavouritesController@store');
 Route::delete('/replies/{reply}', 'RepliesController@destroy');
 Route::patch('/replies/{reply}', 'RepliesController@update');
+
+Route::post('/replies/{reply}/favourites', 'FavouritesController@store');
+Route::delete('/replies/{reply}/favourites', 'FavouritesController@destroy');
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
