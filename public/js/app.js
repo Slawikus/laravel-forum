@@ -42524,19 +42524,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         classes: function classes() {
             return ['btn', this.isFavourited ? 'btn-primary' : 'btn-default'];
+        },
+        endpoint: function endpoint() {
+            return '/replies/' + this.reply.id + '/favourites';
         }
     },
     methods: {
         toggle: function toggle() {
-            if (this.isFavourited) {
-                axios.delete('/replies/' + this.reply.id + '/favourites');
-                this.isFavourited = false;
-                this.favouritesCount--;
-            } else {
-                axios.post('/replies/' + this.reply.id + '/favourites');
-                this.isFavourited = true;
-                this.favouritesCount++;
-            }
+            return this.isFavourited ? this.destroy() : this.create();
+        },
+        create: function create() {
+            axios.post(this.endpoint);
+            this.isFavourited = true;
+            this.favouritesCount++;
+        },
+        destroy: function destroy() {
+            axios.delete(this.endpoint);
+            this.isFavourited = false;
+            this.favouritesCount--;
         }
     }
 });
